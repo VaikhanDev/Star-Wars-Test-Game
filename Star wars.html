@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Star Wars Battle - No Images</title>
+<style>
+  body {
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: yellow;
+  }
+  .characters {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+  .character {
+    width: 200px;
+    background: #222;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px red;
+    font-size: 1.3em;
+  }
+  .health {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  .log {
+    margin-top: 30px;
+    font-size: 1.1em;
+    height: 120px;
+    overflow-y: auto;
+    background: #111;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+  }
+  button {
+    margin-top: 25px;
+    padding: 12px 30px;
+    font-size: 1.2em;
+    background: red;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<h1>⚔️ Star Wars: Luke vs Vader ⚔️</h1>
+
+<div class="characters">
+  <div class="character" id="luke">
+    Luke Skywalker
+    <div class="health" id="lukeHealth">Health: 100</div>
+  </div>
+
+  <div class="character" id="vader">
+    Darth Vader
+    <div class="health" id="vaderHealth">Health: 100</div>
+  </div>
+</div>
+
+<button onclick="attack()">Attack!</button>
+
+<div class="log" id="log"></div>
+
+<script>
+  let lukeHP = 100;
+  let vaderHP = 100;
+  const logDiv = document.getElementById("log");
+
+  function attack() {
+    if (lukeHP <= 0 || vaderHP <= 0) return;
+
+    const lukeDmg = Math.floor(Math.random() * 15) + 5;
+    const vaderDmg = Math.floor(Math.random() * 15) + 5;
+
+    vaderHP -= lukeDmg;
+    lukeHP -= vaderDmg;
+
+    vaderHP = Math.max(0, vaderHP);
+    lukeHP = Math.max(0, lukeHP);
+
+    document.getElementById("lukeHealth").textContent = "Health: " + lukeHP;
+    document.getElementById("vaderHealth").textContent = "Health: " + vaderHP;
+
+    let logText = `Luke hits Vader for ${lukeDmg} damage!<br>`;
+    logText += `Vader strikes back for ${vaderDmg} damage!<br>`;
+
+    if (vaderHP <= 0 && lukeHP <= 0) {
+      logText += `<strong>They both fall... it's a draw!</strong>`;
+      disableButton();
+    } else if (vaderHP <= 0) {
+      logText += `<strong>Luke Skywalker wins!</strong>`;
+      disableButton();
+    } else if (lukeHP <= 0) {
+      logText += `<strong>Darth Vader wins!</strong>`;
+      disableButton();
+    }
+
+    logDiv.innerHTML = logText + "<hr>" + logDiv.innerHTML;
+  }
+
+  function disableButton() {
+    document.querySelector("button").disabled = true;
+  }
+</script>
+
+</body>
+</html>
+
